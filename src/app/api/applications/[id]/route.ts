@@ -1,24 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { ApplicationSchema } from '@/lib/validators'
-import { verifyToken } from '@/lib/auth'
+import { getUserId } from '@/lib/session'
 import { ApplicationStatus } from '@prisma/client'
 
-async function getUserId(req: NextRequest): Promise<string | null> {
-  try {
-    const token = req.cookies.get('token')?.value
-    if (!token) return null
-    const payload = await verifyToken(token)
-    return payload.userId
-  } catch {
-    return null
-  }
-}
-
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const userId = await getUserId(req)
     if (!userId) {
@@ -37,26 +23,17 @@ export async function GET(
     })
 
     if (!application) {
-      return NextResponse.json(
-        { error: 'Application not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Application not found' }, { status: 404 })
     }
 
     return NextResponse.json({ application })
   } catch (error) {
     console.error('GET application error:', error)
-    return NextResponse.json(
-      { error: 'Something went wrong' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const userId = await getUserId(req)
     if (!userId) {
@@ -68,10 +45,7 @@ export async function PATCH(
     const parsed = ApplicationSchema.partial().safeParse(body)
 
     if (!parsed.success) {
-      return NextResponse.json(
-        { error: parsed.error.issues[0].message },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
 
     const existing = await prisma.application.findFirst({
@@ -79,10 +53,7 @@ export async function PATCH(
     })
 
     if (!existing) {
-      return NextResponse.json(
-        { error: 'Application not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Application not found' }, { status: 404 })
     }
 
     const data = parsed.data
@@ -118,17 +89,11 @@ export async function PATCH(
     return NextResponse.json({ application })
   } catch (error) {
     console.error('PATCH application error:', error)
-    return NextResponse.json(
-      { error: 'Something went wrong' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const userId = await getUserId(req)
     if (!userId) {
@@ -142,10 +107,7 @@ export async function DELETE(
     })
 
     if (!existing) {
-      return NextResponse.json(
-        { error: 'Application not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Application not found' }, { status: 404 })
     }
 
     await prisma.application.delete({ where: { id } })
@@ -153,9 +115,6 @@ export async function DELETE(
     return NextResponse.json({ message: 'Application deleted successfully' })
   } catch (error) {
     console.error('DELETE application error:', error)
-    return NextResponse.json(
-      { error: 'Something went wrong' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }
 }

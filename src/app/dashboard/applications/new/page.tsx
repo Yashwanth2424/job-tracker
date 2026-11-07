@@ -118,9 +118,7 @@ export default function NewApplicationPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Location
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
             <input
               type="text"
               name="location"
@@ -150,9 +148,7 @@ export default function NewApplicationPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Job URL
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Job URL</label>
           <input
             type="url"
             name="jobUrl"
@@ -178,9 +174,7 @@ export default function NewApplicationPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Applied Date
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Applied Date</label>
             <input
               type="date"
               name="appliedAt"
@@ -192,9 +186,7 @@ export default function NewApplicationPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Follow-up Date
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Follow-up Date</label>
           <input
             type="date"
             name="followUpDate"
@@ -205,9 +197,7 @@ export default function NewApplicationPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Notes
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
           <textarea
             name="notes"
             value={formData.notes}

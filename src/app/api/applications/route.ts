@@ -1,34 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { ApplicationSchema } from '@/lib/validators'
-import { verifyToken } from '@/lib/auth'
+import { getUserId } from '@/lib/session'
 import { ApplicationStatus } from '@prisma/client'
-
-async function getUserId(req: NextRequest): Promise<string | null> {
-  try {
-    const token = req.cookies.get('token')?.value
-
-    if (!token) {
-      return null
-    }
-
-    const payload = await verifyToken(token)
-
-    return payload.userId
-  } catch {
-    return null
-  }
-}
 
 export async function GET(req: NextRequest) {
   try {
     const userId = await getUserId(req)
 
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const { searchParams } = new URL(req.url)
@@ -80,10 +61,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error('GET applications error:', error)
 
-    return NextResponse.json(
-      { error: 'Something went wrong' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }
 }
 
@@ -92,10 +70,7 @@ export async function POST(req: NextRequest) {
     const userId = await getUserId(req)
 
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const body = await req.json()
@@ -124,12 +99,8 @@ export async function POST(req: NextRequest) {
         jobUrl: data.jobUrl,
         salaryExpectation: data.salaryExpectation,
         status: data.status,
-        appliedAt: data.appliedAt
-          ? new Date(data.appliedAt)
-          : null,
-        followUpDate: data.followUpDate
-          ? new Date(data.followUpDate)
-          : null,
+        appliedAt: data.appliedAt ? new Date(data.appliedAt) : null,
+        followUpDate: data.followUpDate ? new Date(data.followUpDate) : null,
         notes: data.notes,
 
         statusHistory: {
@@ -140,16 +111,10 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    return NextResponse.json(
-      { application },
-      { status: 201 }
-    )
+    return NextResponse.json({ application }, { status: 201 })
   } catch (error) {
     console.error('POST application error:', error)
 
-    return NextResponse.json(
-      { error: 'Something went wrong' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }
 }

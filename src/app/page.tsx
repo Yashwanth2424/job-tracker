@@ -8,8 +8,8 @@ export default function LandingPage() {
           Job<span className="text-green-400">Tracker</span>
         </h1>
         <p className="text-gray-400 text-base mb-8">
-          Track your Werkstudent applications in one place.
-          Status updates, follow-up reminders, and dashboard analytics.
+          Track your Werkstudent applications in one place. Status updates, follow-up reminders, and
+          dashboard analytics.
         </p>
         <div className="flex gap-3 justify-center">
           <Link

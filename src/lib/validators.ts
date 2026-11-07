@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { STATUSES } from '@/lib/status'
 
 export const RegisterSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -17,7 +18,7 @@ export const ApplicationSchema = z.object({
   location: z.string().optional(),
   jobUrl: z.string().url('Invalid URL').optional().or(z.literal('')),
   salaryExpectation: z.string().optional(),
-  status: z.enum(['SAVED', 'APPLIED', 'INTERVIEW_SCHEDULED', 'INTERVIEW_DONE', 'OFFER', 'REJECTED', 'WITHDRAWN']),
+  status: z.enum(STATUSES),
   appliedAt: z.string().optional(),
   followUpDate: z.string().optional(),
   notes: z.string().optional(),

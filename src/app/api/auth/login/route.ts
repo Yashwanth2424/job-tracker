@@ -10,10 +10,7 @@ export async function POST(req: NextRequest) {
     const parsed = LoginSchema.safeParse(body)
 
     if (!parsed.success) {
-      return NextResponse.json(
-        { error: parsed.error.issues[0].message },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
 
     const { email, password } = parsed.data
@@ -23,19 +20,13 @@ export async function POST(req: NextRequest) {
     })
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid email or password' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
     }
 
     const passwordValid = await bcrypt.compare(password, user.password)
 
     if (!passwordValid) {
-      return NextResponse.json(
-        { error: 'Invalid email or password' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
     }
 
     const token = await signToken({ userId: user.id, email: user.email })
@@ -59,9 +50,6 @@ export async function POST(req: NextRequest) {
     return response
   } catch (error) {
     console.error('Login error:', error)
-    return NextResponse.json(
-      { error: 'Something went wrong. Please try again.' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 })
   }
 }

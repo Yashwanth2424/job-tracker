@@ -64,11 +64,7 @@ function Sidebar({ pathname, loggingOut, onLogout, onNavClick }: SidebarProps) {
   )
 }
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const [loggingOut, setLoggingOut] = useState(false)
@@ -82,7 +78,6 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Desktop sidebar */}
       <aside className="hidden md:flex w-64 bg-gray-900 flex-col fixed top-0 left-0 h-full z-10">
         <Sidebar
           pathname={pathname}
@@ -92,7 +87,6 @@ export default function DashboardLayout({
         />
       </aside>
 
-      {/* Mobile overlay */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
@@ -100,7 +94,6 @@ export default function DashboardLayout({
         />
       )}
 
-      {/* Mobile sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full w-64 bg-gray-900 flex flex-col z-30 transform transition-transform duration-300 md:hidden ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -114,9 +107,7 @@ export default function DashboardLayout({
         />
       </aside>
 
-      {/* Main content */}
       <main className="flex-1 md:ml-64 min-h-screen">
-        {/* Mobile header */}
         <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200 sticky top-0 z-10">
           <h1 className="text-gray-900 font-bold text-base">
             Job<span className="text-green-600">Tracker</span>
